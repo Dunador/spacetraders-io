@@ -6,27 +6,29 @@ import {
   AccountResponse,
   AvailableLoanResponse,
   AvailableShipResponse,
+  AvailableStructureResponse,
+  CreateStructureResponse,
   ErrorResponse,
   FlightPlanResponse,
   FlightPlansResponse,
+  Good,
+  JettisonResponse,
+  ListStructuresResponse,
   LoanType,
   LocationResponse,
+  LocationShipsResponse,
   LocationsResponse,
   MarketplaceResponse,
   PurchaseResponse,
   SellResponse,
   ShipResponse,
-  ShipsResponse,
   ShipSellResponse,
+  ShipsResponse,
   StatusResponse,
-  TokenResponse,
-  JettisonResponse,
-  AvailableStructureResponse,
-  CreateStructureResponse,
-  Good,
   StructureDepositResponse,
   StructureTransferResponse,
-  ListStructuresResponse,
+  SystemsResponse,
+  TokenResponse,
 } from './types'
 import { asyncSleep, asyncWrap } from './utils'
 
@@ -60,9 +62,8 @@ export class SpaceTraders {
 
   async init(username: string, token?: string) {
     if (!username) throw new Error('Username is required.')
-    if (!token) return await this.createUser(username)
-
     this.username = username
+    if (!token) return await this.createUser()
     this.token = token
 
     return token
@@ -148,11 +149,13 @@ export class SpaceTraders {
   listSystems() {
     const url = '/game/systems'
 
-    return this.makeAuthRequest<LocationResponse>(url, 'get')
+    return this.makeAuthRequest<SystemsResponse>(url, 'get')
   }
 
   listLocations(system: string = 'OE', type?: string, allowsConstruction?: boolean) {
-    const url = !type ? `/game/systems/${system}/locations` : `/game/systems/${system}/locations?type=${type}&allowsConstruction=${allowsConstruction}`
+    const url = !type
+      ? `/game/systems/${system}/locations`
+      : `/game/systems/${system}/locations?type=${type}&allowsConstruction=${allowsConstruction}`
 
     return this.makeAuthRequest<LocationsResponse>(url, 'get')
   }
@@ -192,7 +195,7 @@ export class SpaceTraders {
     const url = this.makeUserPath(`ships/${shipId}/jettison`)
     const payload = { good, quantity }
 
-    return this.makeAuthRequest<JettisonResponse>(url, 'put', payload);
+    return this.makeAuthRequest<JettisonResponse>(url, 'put', payload)
   }
 
   getAvailableStructures() {
@@ -234,9 +237,15 @@ export class SpaceTraders {
     return this.makeAuthRequest<ListStructuresResponse>(url, 'get')
   }
 
-  private async createUser(newUsername: string) {
-    const path = this.makeUserPath(`${newUsername}/token`)
-    const url = `${BASE_URL}/users/${path}`
+  getLocationShips(location: string) {
+    const url = `/game/locations/${location}/ships`
+
+    return this.makeAuthRequest<LocationShipsResponse>(url, 'get')
+  }
+
+  private async createUser() {
+    const path = this.makeUserPath(`token`)
+    const url = `${BASE_URL}${path}`
 
     const resp = await axios.post<TokenResponse>(url)
 

@@ -1,13 +1,3 @@
-export interface Cargo {
-  good: Good
-  quantity: number
-}
-
-export interface Coordinates {
-  x: number
-  y: number
-}
-
 export interface AllFlightsPlan {
   id: string
   createdAt: string
@@ -17,6 +7,25 @@ export interface AllFlightsPlan {
   to: string
   username: string
   shipType: string
+}
+
+export interface AvailableStructure {
+  allowedLocationTypes: string[]
+  consumes: Good[]
+  price: number
+  name: string
+  produces: Good[]
+  symbol: string
+}
+
+export interface Cargo {
+  good: Good
+  quantity: number
+}
+
+export interface Coordinates {
+  x: number
+  y: number
 }
 
 export interface FlightPlan {
@@ -61,6 +70,10 @@ export interface Location extends Coordinates {
   type: string
 }
 
+export interface LocationWithMarketplace extends Location {
+  marketplace: Marketplace[]
+}
+
 export interface Marketplace {
   quantityAvailable: number
   pricePerUnit: number
@@ -70,25 +83,12 @@ export interface Marketplace {
   sellPricePerUnit: number
   purchasePricePerUnit: number
 }
+
 export interface Order {
   good: string
   pricePerUnit: number
   quantity: number
   total: number
-}
-
-export interface Location extends Coordinates {
-  name: string
-  symbol: string
-  type: string
-}
-
-export interface LocationWithMarketplace extends Location {
-  marketplace: Marketplace[]
-}
-
-export interface StatusResponse {
-  status: string
 }
 
 export interface Ship {
@@ -108,6 +108,7 @@ export interface Ship {
   weapons: number
 }
 
+<<<<<<< HEAD
 export interface AvailableStructure {
   allowedLocationTypes: string[]
   consumes: Good[]
@@ -125,6 +126,8 @@ export interface CreateStructureResponse {
   structure: StructureDetails
 }
 
+=======
+>>>>>>> 9c73abe2300d10ca861f89f2e754d583b04530aa
 export interface StructureDetails {
   id: string
   type: string
@@ -141,6 +144,7 @@ export interface StructureDetails {
   produces: Good[]
 }
 
+<<<<<<< HEAD
 export interface StructureDepositResponse {
   deposit: Cargo
   ship: { cargo: Cargo[] }
@@ -157,6 +161,8 @@ export interface ListStructuresResponse {
   structures: StructureDetails[]
 }
 
+=======
+>>>>>>> 9c73abe2300d10ca861f89f2e754d583b04530aa
 export interface System {
   symbol: string
   name: string
@@ -206,25 +212,19 @@ export interface AvailableShipResponse {
   ships: Ship[]
 }
 
+export interface AvailableStructureResponse {
+  structures: AvailableStructure[]
+}
+
+export interface CreateStructureResponse {
+  structure: StructureDetails
+}
+
 export interface ErrorResponse {
   error: {
     code: number
     message: string
   }
-}
-
-export interface JettisonResponse {
-  good: Good
-  quantityRemaining: number
-  shipId: string
-}
-
-export interface LocationResponse {
-  location: Location
-}
-
-export interface LocationsResponse {
-  locations: Location[]
 }
 
 export interface FlightPlanResponse {
@@ -233,6 +233,29 @@ export interface FlightPlanResponse {
 
 export interface FlightPlansResponse {
   flightPlans: AllFlightsPlan[]
+}
+
+export interface JettisonResponse {
+  good: Good
+  quantityRemaining: number
+  shipId: string
+}
+
+export interface ListStructuresResponse {
+  structures: StructureDetails[]
+}
+
+export interface LocationResponse {
+  dockedShips: number
+  location: Location
+}
+
+export interface LocationShipsResponse {
+  ships: Ship[]
+}
+
+export interface LocationsResponse {
+  locations: Location[]
 }
 
 export interface MarketplaceResponse {
@@ -260,7 +283,23 @@ export interface ShipsResponse {
 }
 
 export interface SystemsResponse {
-  systems: System
+  systems: System[]
+}
+
+export interface StatusResponse {
+  status: string
+}
+
+export interface StructureDepositResponse {
+  deposit: Cargo
+  ship: { cargo: Cargo[] }
+  structure: { inventory: Cargo[] }
+}
+
+export interface StructureTransferResponse {
+  transfer: Cargo
+  ship: { cargo: Cargo[] }
+  structure: { inventory: Cargo[] }
 }
 
 export interface TokenResponse {
