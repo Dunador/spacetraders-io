@@ -63,7 +63,7 @@ export class SpaceTraders {
   async init(username: string, token?: string) {
     if (!username) throw new Error('Username is required.')
     this.username = username
-    if (!token) return await this.createUser()
+    if (!token) token = await this.createUser()
     this.token = token
 
     return token
